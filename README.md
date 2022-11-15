@@ -190,6 +190,54 @@ Pixel does that and implements it's own color format (which you may or might not
 
 There are two constructors. One is [pixel.RGB](https://godoc.org/github.com/faiface/pixel#RGB), which creates a fully opaque RGB color. The other one is [pixel.Alpha](https://godoc.org/github.com/faiface/pixel#Alpha) constructor which creates a transparent white color. Creating a transparent RGBA color is achieved by creating a opaque RGB color and multiplying it by a transparent white.
 
+## Icon
+Let's say we want to add an icon to spruce up our little window, make it less dull. How would we go about that? Well, Pixel has it's own system for sprites and icons, which is implemented through the `pixel.Picture` struct (Sprites work a little bit differently, but we won't get into that here. For info on sprites see the wiki [here](https://github.com/faiface/pixel/wiki/Drawing-a-Sprite)). Pictures can be loaded using this handy function shamelessly stolen from the [Pixel Wiki](https://github.com/faiface/pixel/wiki). 
+First, we need to import the "image" package and we also need to "underscore import" the "image/png" package to load PNG files. We also need to import the "os" package to load files from the filesystem.
+```go
+import (
+	"image"
+	"os"
+
+	_ "image/png"
+
+	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
+)
+```
+After this we can insert our helper function
+```go
+func loadPicture(path string) (pixel.Picture, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	img, _, err := image.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+	return pixel.PictureDataFromImage(img), nil
+}
+```
+This simply loads an image from a path, decodes it into a standard `image.Image`, then converts it to a `pixel.Picture`
+
+Now we can insert this snippet into our window config, adding an icon to the window.
+```go
+    icon, err := LoadPicture("icon.png")         //
+    if err != nil {                              //
+        panic(err)                               //
+    }                                            //
+
+    cfg := pixelgl.WindowConfig{
+        Title:  "Go Pixel",
+        Bounds: pixel.R(0, 0, SCREENX, SCREENY),
+        Icon:  []pixel.Picture{icon},            //
+        VSync: true,
+    }
+```
+Now, you might have noticed that when you add the icon to the config, you use a slice. This is because you can add multiple differently sized icons to the window, and the OS can choose which one to display given the context. For example, Windows uses a 32x32 icon for the Taskbar and Start menu, a 48x48 icon for Desktop shorcuts, and 16x16 icons for Task Manager. You can stylize theses smaller icons differently vs. the default scaling. 
+
 ## Game Creation
 IMDraw can create many more shapes, and there are countless ways to utilize it, but for now all we need is the `imd.Rectangle` function.
 
@@ -336,11 +384,9 @@ Here's the final code:
 package main
 
 import (
-    "image"
     "os"
-    "path"
-    "runtime"
     "time"
+    "image"
 
     _ "image/png"
 
@@ -463,16 +509,8 @@ func LoadPicture(path string) (pixel.Picture, error) {
     return pixel.PictureDataFromImage(img), nil
 }
 
-// returns the absolute path of a path relative to the file's parent directory
-func relative(relative string) string {
-    _, filepath, _, _ := runtime.Caller(0)
-    dir := path.Dir(filepath)
-    return path.Join(dir, relative)
-}
-
 func run() {
-    iconpath := relative("icon.png")
-    icon, err := LoadPicture(iconpath)
+    icon, err := LoadPicture("icon.png")
     if err != nil {
         panic(err)
     }
