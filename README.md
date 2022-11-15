@@ -2,7 +2,7 @@
 
 Pixel is a hand-crafted 2D game library in Go.
 This is an intro tutorial that will cover the basics and make a simple version of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
-###### Credit to the [Pixel Wiki](https://github.com/faiface/pixel/wiki) for explanations, code,  and quotes.
+###### Credit to the [Pixel Wiki](https://github.com/faiface/pixel/wiki) for some explanations, code, and quotes. Please explore the wiki before or after this guide, there's lots covered there that isn't in here.
 
 ## Initialization
 First we need to get some imports out of the way, such as [Pixel](https://pkg.go.dev/github.com/faiface/pixel?utm_source=godoc) and [PixelGL](https://pkg.go.dev/github.com/faiface/pixel/pixelgl?utm_source=godoc)
