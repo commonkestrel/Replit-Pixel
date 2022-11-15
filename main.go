@@ -5,7 +5,6 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"time"
 
 	_ "image/png"
 
