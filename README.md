@@ -109,7 +109,7 @@ func main() {
 ```
 
 This should just create a blank window like so:
-![empty](https://raw.githubusercontent.com/Jibble330/Replit-Pixel/main/screenshots/blank.png)
+![empty](https://raw.githubusercontent.com/commonkestrel/Replit-Pixel/main/screenshots/blank.png)
 
 ## Drawing
 A blank window is only exciting for so long. What if we want a different color background?
@@ -123,7 +123,7 @@ for !win.Closed() {
 ```
 
 Now you should see something like this:
-![empty](https://raw.githubusercontent.com/Jibble330/Replit-Pixel/main/screenshots/skyblue.png)
+![empty](https://raw.githubusercontent.com/commonkestrel/Replit-Pixel/main/screenshots/skyblue.png)
 
 But wait! I thought we were going to draw things, not just change the background color. Don't worry, drawing primitive shapes is made easy using the [IMDraw](https://pkg.go.dev/github.com/faiface/pixel/imdraw?utm_source=godoc) package. First we have to add it to our import statement:
 ```go
@@ -166,7 +166,7 @@ Now that we have our `IMDraw`, we can use it to make some basic shapes, for exam
 ```
 
 Here we get this:
-![empty](https://raw.githubusercontent.com/Jibble330/Replit-Pixel/main/screenshots/triangle.png)
+![empty](https://raw.githubusercontent.com/commonkestrel/Replit-Pixel/main/screenshots/triangle.png)
 
 It works! But hold on, what exactly is going on here?
 
@@ -377,7 +377,7 @@ Now we need a way to run the simulation and change cells on the screen, which we
 ```
 What we're doing here is checking if certain keys were just pressed with the `Window.JustPressed` method. You can check a specific button with the coorisponding constant in `PixelGL`. At the beginning we check if the space bar was pressed, and if so play/pause the simulation. After we do that we check if the simulation is running and also if the time since the last update has exceeded the minimum time between updates. We add a minimum between time because without the simulation would be updating at the same speed as your FPS, which is a little nausiating. After that check, we also check if the left mouse button was pressed, and if the program isn't running we get the mouse coordinates, which we can get with the `Window.MousePosition` function. The mouse coordinates are in screen coordinates, which doesn't work for our smaller grid, so we have to scale the coordinates down before inverting the clicked cell. After all this logic we can simply draw the board to the screen! Here's what all of this looks like with a simple glider:
 
-![GIF of game](https://raw.githubusercontent.com/Jibble330/Replit-Pixel/main/screenshots/game.gif)
+![GIF of game](https://raw.githubusercontent.com/commonkestrel/Replit-Pixel/main/screenshots/game.gif)
 
 Here's the final code:
 ```go
